@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resultados del Juego</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f9f9f9;
+      margin: 20px;
+    }
+
+    h2 {
+      color: #333;
+      text-align: center;
+    }
+
+    form {
+      margin-bottom: 20px;
+      text-align: center;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-around;
+      align-items: center;
+    }
+
+    label {
+      flex: 1;
+      display: block;
+      margin-bottom: 8px;
+      font-weight: bold;
+      text-align: left;
+    }
+
+    input[type="text"],
+    input[type="date"],
+    select {
+      flex: 4; /* O ajusta según tus necesidades */
+      padding: 10px;
+      margin-bottom: 15px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    button {
+      width: 10%;
+      background-color: #4caf50;
+      color: white;
+      padding: 10px 10px;
+      align-items: center;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    hr {
+      border: 1px solid #ddd;
+      margin: 20px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 15px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    @media (max-width: 600px) {
+      form {
+        flex-direction: column;
+      }
+      input[type="text"],
+      input[type="date"],
+      select {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <form action="/resultados" method="get">
+    <!-- Utilizar el método GET para enviar los parámetros de búsqueda en la URL -->
+    <label for="nombre">Filtrar por Nombre:</label>
+    <input type="text" name="nombre" placeholder="Ingrese el nombre">
+
+    <label for="resultadoJuego">Filtrar por Resultado del Juego:</label>
+    <input type="text" name="resultadoJuego" placeholder="Ingrese el resultado del juego">
+
+    <label for="fecha">Filtrar por Fecha:</label>
+    <input type="date" name="fecha">
+
+    <label for="category">Filtrar por Categoría:</label>
+    <select name="category">
+      <option value="">Todas</option>
+      <option value="Animales">Animales</option>
+      <option value="Colores">Colores</option>
+    </select>
+
+    <button type="submit">Filtrar</button>
+  </form>
+
+  <hr>
+
+  <h2>Resultados del Juego</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>Fecha</th>
+        <th>Tiempo de Duración</th>
+        <th>Resultado del Juego</th>
+        <th>Categoría</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% resultados.forEach(resultado => { %>
+        <tr>
+          <td><%= resultado.nombre %></td>
+          <td><%= new Intl.DateTimeFormat('es-ES').format(resultado.fecha) %></td>
+          <% 
+            const minutos = Math.floor(resultado.tiempoDuracion / 60000);
+            const segundos = resultado.tiempoDuracion % 6000;
+          %>
+          <td><%= minutos %> minutos y <%= segundos %> segundos</td>
+          <td><%= resultado.resultadoJuego %></td>
+          <td><%= resultado.category %></td>
+        </tr>
+      <% }); %>
+    </tbody>
+  </table>
+</body>
+</html>
